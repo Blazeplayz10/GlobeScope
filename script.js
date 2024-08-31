@@ -107,6 +107,14 @@ function refillPage() {
     })
     searchBar.value = ""
     searchBar.placeholder = "Search for a country..."
+    searchBar.addEventListener("keypress", (e) => {
+        if (e.key == "Enter") {
+            e.preventDefault()
+            var searchTerm = searchBar.value.slice(0, 1).toUpperCase() + searchBar.value.slice(1).toLowerCase()
+            searchCountries(searchTerm)
+            console.log(searchTerm)
+        }
+    })
 }
 
 
@@ -114,7 +122,7 @@ function showCountryDetails(country) {
     var languages = country.languages.map(lang => lang.name).join(", ")
     document.querySelector("main").innerHTML = `
                 <div class="container-lg py-5">
-                <div class="row ms-5"><button onclick="refillPage()" class="btn bg-white shadow-sm col-6 col-md-2" id="back"><i class="bi bi-arrow-left me-2"></i>Back</button></div>
+                <div class="row ms-5"><button onclick="location.reload()" class="btn bg-white shadow-sm col-6 col-md-2" id="back"><i class="bi bi-arrow-left me-2"></i>Back</button></div>
                 <div class="row m-5" id="container">
                     <div class="container-fluid col-12 col-md-6">
                         <img src="${country.flags.png}" class="img-fluid" alt="flag">
