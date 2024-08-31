@@ -106,6 +106,7 @@ function refillPage() {
         document.getElementById("country-list").appendChild(countryCard)
     })
     searchBar.value = ""
+    searchBar.placeholder = "Search for a country..."
 }
 
 
@@ -155,6 +156,8 @@ function toggleDarkMode() {
         document.getElementById("top-nav").style.backgroundColor = "hsl(209, 23%, 22%)"
         document.querySelector("#top-nav a").style.color = "white"
         document.querySelector("#top-nav button").style.color = "white"
+        document.querySelector("main").classList.remove("bg-light")
+        document.querySelector("main").style.backgroundColor = "hsl(207, 26%, 17%)"
         if (searchBar && document.getElementById("dropdown")) {
 
             document.getElementById("button-addon1").classList.remove("bg-white", "border-top", "border-start", "border-bottom")
@@ -172,8 +175,6 @@ function toggleDarkMode() {
             document.querySelector(".dropdown-menu").style.backgroundColor = "hsl(209, 23%, 22%)"
             document.querySelectorAll(".dropdown-menu li button").forEach(button => button.style.color = "white")
 
-            document.querySelector("main").classList.remove("bg-light")
-            document.querySelector("main").style.backgroundColor = "hsl(207, 26%, 17%)"
 
             document.querySelectorAll(".card").forEach(card => {
                 card.style.backgroundColor = "hsl(209, 23%, 22%)"
@@ -199,11 +200,14 @@ function toggleDarkMode() {
     } else {
         const back = document.getElementById("back")
         document.querySelector("body").style.color = "black"
+        document.querySelector("body").style.backgroundColor = "white"
 
         document.getElementById("top-nav").classList.add("bg-white")
         document.getElementById("top-nav").style.backgroundColor = "white"
         document.querySelector("#top-nav a").style.color = "black"
         document.querySelector("#top-nav button").style.color = "black"
+        document.querySelector("main").classList.add("bg-light")
+        document.querySelector("main").style.backgroundColor = "white"
 
         if (searchBar && document.getElementById("dropdown")) {
             document.getElementById("button-addon1").classList.add("bg-white", "border-top", "border-start", "border-bottom")
@@ -221,8 +225,6 @@ function toggleDarkMode() {
             document.querySelector(".dropdown-menu").style.backgroundColor = "white"
             document.querySelectorAll(".dropdown-menu li button").forEach(button => button.style.color = "black")
 
-            document.querySelector("main").classList.add("bg-light")
-            document.querySelector("main").style.backgroundColor = "white"
 
             document.querySelectorAll(".card").forEach(card => {
                 card.style.backgroundColor = "white"
@@ -235,6 +237,7 @@ function toggleDarkMode() {
             document.getElementById("container").style.backgroundColor = "white"
             document.getElementById("container").style.color = "black"
             document.getElementById("container").parentElement.style.backgroundColor = "white"
+            document.getElementById("container").parentElement.parentElement.style.backgroundColor = "white"
         }
         document.getElementById("moon").classList.replace("bi-moon-fill", "bi-moon")
         document.getElementById("moon").nextElementSibling.innerText = "Dark Mode"
