@@ -63,17 +63,58 @@ searchBar.addEventListener("keypress", (e) => {
 })
 document.getElementById("button-addon1").addEventListener("click", () => searchCountries(searchBar.value.slice(0, 1).toUpperCase() + searchBar.value.slice(1).toLowerCase()))
 function refillPage() {
+    document.querySelector("main").innerHTML = `
+        <nav class="navbar pt-4">
+            <div class="container-lg">
+                <form>
+                    <div class="input-group shadow rounded">
+                        <button class="btn bg-white border-top border-start border-bottom" type="button"
+                            id="button-addon1"><i class="bi bi-search"></i></button>
+                        <input class="form-control" aria-describedby="button-addon1" type="search"
+                            placeholder="Search for a country..." style="padding: 5px;" id="search-input">
+                    </div>
+                </form>
+    
+                <div class="dropdown-center">
+                    <button class="btn bg-white dropdown-toggle shadow" id="dropdown" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false" ondblclick="refillPage()">
+                        Filter by region
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" onclick="filterCountries('Africa')">Africa</button></li>
+                        <li><button class="dropdown-item" onclick="filterCountries('Americas')">Americas</button></li>
+                        <li><button class="dropdown-item" onclick="filterCountries('Asia')">Asia</button></li>
+                        <li><button class="dropdown-item" onclick="filterCountries('Europe')">Europe</button></li>
+                        <li><button class="dropdown-item" onclick="filterCountries('Oceania')">Oceania</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-lg">
+            <div class="country-list row d-flex justify-content-evenly" id="country-list">
+            </div>
+        </div>
+    `
     countries.forEach(countryCard => {
+        countryCard.className = "card p-0 col-2 m-3 shadow"
+            countryCard.style.width = "14rem"
+            countryCard.style.height = "18rem"
+            countryCard.addEventListener("click", () => {
+                showCountryDetails(countryCard.querySelector(".card-title"))
+            })
         countryCard.style.display = "block"
+        document.getElementById("country-list").appendChild(countryCard)
     })
+    searchBar.value = ""
 }
+
 
 function showCountryDetails(country) {
     var languages = country.languages.map(lang => lang.name).join(", ")
     document.querySelector("main").innerHTML = `
                 <div class="container-lg py-5">
-                <div class="row ms-5"><button onclick="location.reload()" class="btn bg-white shadow-sm col-6 col-md-2" id="back"><i class="bi bi-arrow-left me-2"></i>Back</button></div>
-                <div class="row m-5">
+                <div class="row ms-5"><button onclick="refillPage()" class="btn bg-white shadow-sm col-6 col-md-2" id="back"><i class="bi bi-arrow-left me-2"></i>Back</button></div>
+                <div class="row m-5" id="container">
                     <div class="container-fluid col-12 col-md-6">
                         <img src="${country.flags.png}" class="img-fluid" alt="flag">
                     </div>
@@ -107,13 +148,14 @@ function toggleDarkMode() {
     const back = document.getElementById("back")
     var mode = localStorage.getItem("mode")
     if (mode === "light") {
-        if (searchBar) {
-            document.querySelector("body").style.color = "white"
+        document.querySelector("body").style.color = "white"
+        document.querySelector("body").style.backgroundColor = "hsl(207, 26%, 17%)"
 
-            document.getElementById("top-nav").classList.remove("bg-white")
-            document.getElementById("top-nav").style.backgroundColor = "hsl(209, 23%, 22%)"
-            document.querySelector("#top-nav a").style.color = "white"
-            document.querySelector("#top-nav button").style.color = "white"
+        document.getElementById("top-nav").classList.remove("bg-white")
+        document.getElementById("top-nav").style.backgroundColor = "hsl(209, 23%, 22%)"
+        document.querySelector("#top-nav a").style.color = "white"
+        document.querySelector("#top-nav button").style.color = "white"
+        if (searchBar && document.getElementById("dropdown")) {
 
             document.getElementById("button-addon1").classList.remove("bg-white", "border-top", "border-start", "border-bottom")
             document.getElementById("button-addon1").style.backgroundColor = "hsl(209, 23%, 22%)"
@@ -142,9 +184,13 @@ function toggleDarkMode() {
             back.classList.remove("bg-white")
             back.style.backgroundColor = "hsl(209, 23%, 22%)"
             back.style.color = "white"
+            document.getElementById("container").style.backgroundColor = "hsl(207, 26%, 17%)"
+            document.getElementById("container").style.color = "white"
+            document.getElementById("container").parentElement.style.backgroundColor = "hsl(207, 26%, 17%)"
         }
 
         document.getElementById("moon").classList.replace("bi-moon", "bi-moon-fill")
+        document.getElementById("moon").nextElementSibling.innerText = "Light Mode"
 
         localStorage.setItem("mode", "dark")
 
@@ -159,7 +205,7 @@ function toggleDarkMode() {
         document.querySelector("#top-nav a").style.color = "black"
         document.querySelector("#top-nav button").style.color = "black"
 
-        if (searchBar) {
+        if (searchBar && document.getElementById("dropdown")) {
             document.getElementById("button-addon1").classList.add("bg-white", "border-top", "border-start", "border-bottom")
             document.getElementById("button-addon1").style.backgroundColor = "white"
             document.querySelector("#button-addon1 i").style.color = "black"
@@ -186,8 +232,12 @@ function toggleDarkMode() {
         else if (back) {
             back.classList.add("bg-white")
             back.style.color = "black"
+            document.getElementById("container").style.backgroundColor = "white"
+            document.getElementById("container").style.color = "black"
+            document.getElementById("container").parentElement.style.backgroundColor = "white"
         }
         document.getElementById("moon").classList.replace("bi-moon-fill", "bi-moon")
+        document.getElementById("moon").nextElementSibling.innerText = "Dark Mode"
         localStorage.setItem("mode", "light")
 
 
