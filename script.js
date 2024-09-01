@@ -1,4 +1,5 @@
 localStorage.setItem("mode", "light")
+
 let countries = []
 const searchBar = document.getElementById("search-input")
 fetch("data.json")
@@ -255,3 +256,9 @@ function toggleDarkMode() {
 
     }
 }
+
+window.onload = () => {
+    if (localStorage.getItem("mode") === "dark") {
+        toggleDarkMode();
+    }
+};
